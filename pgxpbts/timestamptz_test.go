@@ -6,18 +6,10 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/manniwood/pgx-protobuf-timestamp/pgxpbts"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-const pgConnDSN string = "postgres://postgres:postgres@localhost:5432/postgres?application_name=BBB"
-
-// timestamppb.Timestamp has no concept of infinity;
-// so when we read 'infinity' or '-infinity' timestamps from Postgres,
-// this is the "magic date" we will get.
-const infinityMagicDateStr string = "0001-01-01 00:00:00.000000000"
-
-func TestTimestamp(t *testing.T) {
+func TestTimestampTZ(t *testing.T) {
 	ctx := context.Background()
 	conn, err := newConn(ctx, pgConnDSN)
 	if err != nil {
@@ -25,7 +17,7 @@ func TestTimestamp(t *testing.T) {
 	}
 	defer conn.Close(ctx)
 
-	_, err = conn.Exec(ctx, `create temporary table t (id int constraint t_is_singleton check (id = 0) not null, ts timestamp not null)`)
+	_, err = conn.Exec(ctx, `create temporary table t (id int constraint t_is_singleton check (id = 0) not null, ts timestamptz not null)`)
 	if err != nil {
 		t.Fatalf("Could not create temporary table: %v", err)
 	}
@@ -50,7 +42,7 @@ func TestTimestamp(t *testing.T) {
 	}
 }
 
-func TestNilTimestamp(t *testing.T) {
+func TestNilTimestampTZ(t *testing.T) {
 	ctx := context.Background()
 	conn, err := newConn(ctx, pgConnDSN)
 	if err != nil {
@@ -58,7 +50,7 @@ func TestNilTimestamp(t *testing.T) {
 	}
 	defer conn.Close(ctx)
 
-	_, err = conn.Exec(ctx, `create temporary table t (id int constraint t_is_singleton check (id = 0) not null, ts timestamp)`)
+	_, err = conn.Exec(ctx, `create temporary table t (id int constraint t_is_singleton check (id = 0) not null, ts timestamptz)`)
 	if err != nil {
 		t.Fatalf("Could not create temporary table: %v", err)
 	}
@@ -79,7 +71,7 @@ func TestNilTimestamp(t *testing.T) {
 	}
 }
 
-func TestInfiniteTimestamp(t *testing.T) {
+func TestInfiniteTimestampTZ(t *testing.T) {
 	ctx := context.Background()
 	conn, err := newConn(ctx, pgConnDSN)
 	if err != nil {
@@ -88,7 +80,7 @@ func TestInfiniteTimestamp(t *testing.T) {
 	defer conn.Close(ctx)
 
 	var got *timestamppb.Timestamp
-	err = conn.QueryRow(ctx, `select timestamp 'infinity'`).Scan(&got)
+	err = conn.QueryRow(ctx, `select timestamptz 'infinity'`).Scan(&got)
 	if err != nil {
 		t.Fatalf("Could not query db: %v", err)
 	}
@@ -99,7 +91,7 @@ func TestInfiniteTimestamp(t *testing.T) {
 	}
 }
 
-func TestNegativeInfiniteTimestamp(t *testing.T) {
+func TestNegativeInfiniteTimestampTZ(t *testing.T) {
 	ctx := context.Background()
 	conn, err := newConn(ctx, pgConnDSN)
 	if err != nil {
@@ -108,7 +100,7 @@ func TestNegativeInfiniteTimestamp(t *testing.T) {
 	defer conn.Close(ctx)
 
 	var got *timestamppb.Timestamp
-	err = conn.QueryRow(ctx, `select timestamp '-infinity'`).Scan(&got)
+	err = conn.QueryRow(ctx, `select timestamptz '-infinity'`).Scan(&got)
 	if err != nil {
 		t.Fatalf("Could not query db: %v", err)
 	}
@@ -117,20 +109,4 @@ func TestNegativeInfiniteTimestamp(t *testing.T) {
 	if !got.AsTime().Equal(want) {
 		t.Errorf("Got %s; want %s", got.AsTime(), want)
 	}
-}
-
-func newConn(ctx context.Context, dbURL string) (*pgx.Conn, error) {
-	config, err := pgx.ParseConfig(dbURL)
-	if err != nil {
-		return nil, err
-	}
-
-	conn, err := pgx.ConnectConfig(context.Background(), config)
-	if err != nil {
-		return nil, err
-	}
-	pgxpbts.Register(conn.TypeMap())
-	pgxpbts.RegisterTZ(conn.TypeMap())
-
-	return conn, nil
 }
