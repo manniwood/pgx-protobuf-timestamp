@@ -68,3 +68,8 @@ to/from Postgres `timestamp` and `timestamptz` types.
 
 See the tests for examples.
 
+## Inspiration
+
+See https://github.com/jackc/pgx-gofrs-uuid and
+https://github.com/jackc/pgx-shopspring-decimal for more examples of
+how to write type serializers/deserializers for pgx.
