@@ -53,8 +53,8 @@ if err != nil {
 	return nil, err
 }
 config.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
-	pgxbpts.Register(conn.TypeMap())
-	pgxbpts.RegisterTZ(conn.TypeMap())
+	pgxpbts.Register(conn.TypeMap())
+	pgxpbts.RegisterTZ(conn.TypeMap())
 	return nil
 }
 pool, err := pgxpool.NewWithConfig(context.Background(), config)
