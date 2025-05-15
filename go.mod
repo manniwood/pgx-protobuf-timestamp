@@ -1,6 +1,6 @@
 module github.com/manniwood/pgx-protobuf-timestamp
 
-go 1.21.3
+go 1.24.3
 
 require (
 	github.com/jackc/pgx/v5 v5.5.3

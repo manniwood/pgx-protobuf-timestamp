@@ -20,7 +20,7 @@ jobs:
 
     strategy:
       matrix:
-        go-version: [1.21]
+        go-version: [1.24]
         pg-version: [13, 14, 15, 16, 17]
         include:
           - pg-version: 13
