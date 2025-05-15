@@ -9,7 +9,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-func TestTimestampTZ(t *testing.T) {
+func TestTimestampTZV2(t *testing.T) {
 	ctx := context.Background()
 	conn, err := newConn(ctx, pgConnDSN)
 	if err != nil {
@@ -42,7 +42,7 @@ func TestTimestampTZ(t *testing.T) {
 	}
 }
 
-func TestNilTimestampTZ(t *testing.T) {
+func TestNilTimestampTZV2(t *testing.T) {
 	ctx := context.Background()
 	conn, err := newConn(ctx, pgConnDSN)
 	if err != nil {
@@ -71,7 +71,7 @@ func TestNilTimestampTZ(t *testing.T) {
 	}
 }
 
-func TestInfiniteTimestampTZ(t *testing.T) {
+func TestInfiniteTimestampTZV2(t *testing.T) {
 	ctx := context.Background()
 	conn, err := newConn(ctx, pgConnDSN)
 	if err != nil {
@@ -91,7 +91,7 @@ func TestInfiniteTimestampTZ(t *testing.T) {
 	}
 }
 
-func TestNegativeInfiniteTimestampTZ(t *testing.T) {
+func TestNegativeInfiniteTimestampTZV2(t *testing.T) {
 	ctx := context.Background()
 	conn, err := newConn(ctx, pgConnDSN)
 	if err != nil {

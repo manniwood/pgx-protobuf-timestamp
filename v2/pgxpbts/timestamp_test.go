@@ -17,7 +17,7 @@ const pgConnDSN string = "postgres://postgres:postgres@localhost:5432/postgres?a
 // this is the "magic date" we will get.
 const infinityMagicDateStr string = "0001-01-01 00:00:00.000000000"
 
-func TestTimestamp(t *testing.T) {
+func TestTimestampV2(t *testing.T) {
 	ctx := context.Background()
 	conn, err := newConn(ctx, pgConnDSN)
 	if err != nil {
@@ -50,7 +50,7 @@ func TestTimestamp(t *testing.T) {
 	}
 }
 
-func TestNilTimestamp(t *testing.T) {
+func TestNilTimestampV2(t *testing.T) {
 	ctx := context.Background()
 	conn, err := newConn(ctx, pgConnDSN)
 	if err != nil {
@@ -79,7 +79,7 @@ func TestNilTimestamp(t *testing.T) {
 	}
 }
 
-func TestInfiniteTimestamp(t *testing.T) {
+func TestInfiniteTimestampV2(t *testing.T) {
 	ctx := context.Background()
 	conn, err := newConn(ctx, pgConnDSN)
 	if err != nil {
@@ -99,7 +99,7 @@ func TestInfiniteTimestamp(t *testing.T) {
 	}
 }
 
-func TestNegativeInfiniteTimestamp(t *testing.T) {
+func TestNegativeInfiniteTimestampV2(t *testing.T) {
 	ctx := context.Background()
 	conn, err := newConn(ctx, pgConnDSN)
 	if err != nil {
