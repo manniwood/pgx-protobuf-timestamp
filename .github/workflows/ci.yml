@@ -15,19 +15,19 @@ jobs:
     # Note: The TLS tests are rather finicky. It seems that openssl 3 encrypts certificates differently than older
     # openssl and it does it in a way Go and/or pgx ssl handling code can't handle. So stick with Ubuntu 20.04 until
     # that is figured out.
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 30
 
     strategy:
       matrix:
-        go-version: [1.21]
-        pg-version: [12, 13, 14, 15, 16]
+        go-version: [1.24]
+        pg-version: [13, 14, 15, 16, 17]
         include:
-          - pg-version: 12
           - pg-version: 13
           - pg-version: 14
           - pg-version: 15
           - pg-version: 16
+          - pg-version: 17
 
     steps:
 
