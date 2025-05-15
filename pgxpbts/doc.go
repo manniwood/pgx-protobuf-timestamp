@@ -1,4 +1,4 @@
-// Package protobufts is used to help pgx scan postgres timestamp
+// Package pgxpbts is used to help pgx scan postgres timestamp
 // and timestamptz types into Google Protobuf type *timestamppb.Timestamp.
 //
 // For a single pgx connection, *pgx.Conn, register both type translators
