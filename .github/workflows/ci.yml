@@ -46,3 +46,6 @@ jobs:
 
     - name: Test
       run: go test -race ./...
+
+    - name: Test V2
+      run: cd v2 && go test -race ./...
